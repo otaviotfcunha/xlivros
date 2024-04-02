@@ -16,7 +16,9 @@ Projeto de repositório de leitura de livros - Fatec 2024.
 
 ## Alunos:
 
-Otávio Thadeu Franklin da Cunha
+Otávio Thadeu Franklin da Cunha<br>
+Cleber Pereira dos Santos Junior<br>
+Pedro Henrique Leite dos Santos
 
 ## Fluxograma:
 
