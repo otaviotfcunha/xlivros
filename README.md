@@ -10,6 +10,14 @@ Projeto de repositório de leitura de livros - Fatec 2024.
     <li>- [x] Criar páginas e utilizar Navigator</li>
 </ol>
 
+## Cruso:
+
+[DSM] Desenvolvimento de software multiplataforma
+
+## Alunos:
+
+Otávio Thadeu Franklin da Cunha
+
 ## Fluxograma:
 
 

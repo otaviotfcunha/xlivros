@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:xlivros/models/livros_model.dart';
 import 'package:xlivros/repository/historico_livros_repository.dart';
+import 'package:xlivros/shared/app_images.dart';
 
 class MeusLivrosPage extends StatefulWidget {
   const MeusLivrosPage({super.key});
@@ -67,31 +68,37 @@ class _MeusLivrosPageState extends State<MeusLivrosPage> {
                         children: [
                           Container(
                             color: Colors.black,
-                            padding: EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(8),
                             child: Text(
-                              "${hist.nome}",
-                              style: TextStyle(
+                              hist.nome,
+                              style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
                             ),
                           ),
                           ListTile(
-                            contentPadding: EdgeInsets.symmetric(
+                            contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 8),
-                            leading: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                hist.imagem,
-                              ),
-                            ),
+                            leading: hist.imagem == "sem_foto"
+                                ? CircleAvatar(
+                                    backgroundImage: AssetImage(
+                                      AppImages.xBlack,
+                                    ),
+                                  )
+                                : CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                      hist.imagem,
+                                    ),
+                                  ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   "Autores: ${hist.autor}",
-                                  style: TextStyle(fontSize: 14),
+                                  style: const TextStyle(fontSize: 14),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                     height:
                                         8), // Espaçamento entre o título e o subtítulo
                                 Row(
@@ -101,7 +108,7 @@ class _MeusLivrosPageState extends State<MeusLivrosPage> {
                                     Expanded(
                                       child: Text(
                                         hist.data,
-                                        style: TextStyle(fontSize: 14),
+                                        style: const TextStyle(fontSize: 14),
                                       ),
                                     ),
                                     Center(
@@ -136,12 +143,12 @@ class _MeusLivrosPageState extends State<MeusLivrosPage> {
                                             });
                                           },
                                           child: hist.lido == 1
-                                              ? Icon(
+                                              ? const Icon(
                                                   Icons.check_circle,
                                                   color: Colors.green,
                                                   size: 24,
                                                 )
-                                              : Icon(
+                                              : const Icon(
                                                   Icons.cancel,
                                                   color: Colors.red,
                                                   size: 24,
@@ -157,14 +164,14 @@ class _MeusLivrosPageState extends State<MeusLivrosPage> {
                               onPressed: () async {
                                 await historicoRepository.remover(hist.id);
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
+                                  const SnackBar(
                                     content:
                                         Text("Livro removido com sucesso."),
                                   ),
                                 );
                                 obterHistorico();
                               },
-                              child: Icon(Icons.delete),
+                              child: const Icon(Icons.delete),
                             ),
                           ),
                         ],

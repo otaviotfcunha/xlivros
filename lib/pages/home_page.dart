@@ -12,7 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   HistoricoLivrosRepository livrosRepository = HistoricoLivrosRepository();
   List<dynamic> _searchResults = [];
 
@@ -33,6 +33,13 @@ class _HomePageState extends State<HomePage> {
   void _adicionarLivroHistorico(dynamic book) async {
     try {
       String datahoje = DateTime.now().toString();
+      String linkLivro = "";
+
+      if (book['volumeInfo']['imageLinks'] == null) {
+        linkLivro = "sem_foto";
+      } else {
+        linkLivro = book['volumeInfo']['imageLinks']['thumbnail'];
+      }
       LivrosModel livro = LivrosModel(
         0,
         book['volumeInfo']['title'].toString(),
@@ -40,12 +47,13 @@ class _HomePageState extends State<HomePage> {
             ? book['volumeInfo']['authors'].join(', ')
             : 'Autor Desconhecido',
         datahoje,
-        book['volumeInfo']['imageLinks']['thumbnail'],
+        linkLivro,
         0,
       );
       await livrosRepository.salvar(livro);
 
       showDialog(
+        // ignore: use_build_context_synchronously
         context: context,
         builder: (_) => AlertDialog(
           title: const Text("Sucesso"),
@@ -61,6 +69,7 @@ class _HomePageState extends State<HomePage> {
       );
     } catch (e) {
       showDialog(
+        // ignore: use_build_context_synchronously
         context: context,
         builder: (_) => AlertDialog(
           title: const Text("Erro"),
@@ -111,6 +120,7 @@ class _HomePageState extends State<HomePage> {
             ),
             ElevatedButton(
               onPressed: () {
+                FocusScope.of(context).requestFocus(FocusNode());
                 String query = _searchController.text;
                 _searchBooks(query);
               },
@@ -123,13 +133,19 @@ class _HomePageState extends State<HomePage> {
                   dynamic book = _searchResults[index];
                   return Card(
                     child: ListTile(
-                      leading: Image.network(
-                        book['volumeInfo']['imageLinks']['thumbnail'],
-                        width: 50, 
-                        height: 75, 
-                        fit: BoxFit
-                            .cover, 
-                      ),
+                      leading: book['volumeInfo']['imageLinks'] == null
+                          ? Image.asset(
+                              AppImages.logotipoBlack,
+                              width: 50,
+                              height: 75,
+                              fit: BoxFit.fitWidth,
+                            )
+                          : Image.network(
+                              book['volumeInfo']['imageLinks']['thumbnail'],
+                              width: 50,
+                              height: 75,
+                              fit: BoxFit.cover,
+                            ),
                       title: Text(book['volumeInfo']['title']),
                       subtitle: Text(book['volumeInfo']['authors'] != null
                           ? book['volumeInfo']['authors'].join(', ')
