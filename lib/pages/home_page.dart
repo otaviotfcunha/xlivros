@@ -24,21 +24,25 @@ class _HomePageState extends State<HomePage> {
       );
 
       if (response.statusCode == 200) {
-        try {
-          _searchResults = jsonDecode(response.body)['items'];
-        } catch (e) {
-          _searchResults = [];
-        }
+        setState(() {
+          try {
+            _searchResults = jsonDecode(response.body)['items'];
+          } catch (e) {
+            _searchResults = [];
+          }
+        });
       } else {
         _searchResults = [];
         mensagem = 'Falha ao carregar os livros...';
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(mensagem),
-        ),
-      );
+      setState(() {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(mensagem),
+          ),
+        );
+      });
     }
   }
 
