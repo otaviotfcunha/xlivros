@@ -17,32 +17,20 @@ class _HomePageState extends State<HomePage> {
   List<dynamic> _searchResults = [];
 
   Future<void> _searchBooks(String query) async {
-    String mensagem = "";
-    if (query != null) {
-      final response = await http.get(
-        Uri.parse('https://www.googleapis.com/books/v1/volumes?q=$query'),
-      );
+    final response = await http.get(
+      Uri.parse('https://www.googleapis.com/books/v1/volumes?q=$query'),
+    );
 
-      if (response.statusCode == 200) {
-        setState(() {
-          try {
-            _searchResults = jsonDecode(response.body)['items'];
-          } catch (e) {
-            _searchResults = [];
-          }
-        });
-      } else {
-        _searchResults = [];
-        mensagem = 'Falha ao carregar os livros...';
-      }
-    } else {
+    if (response.statusCode == 200) {
       setState(() {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(mensagem),
-          ),
-        );
+        try {
+          _searchResults = jsonDecode(response.body)['items'];
+        } catch (e) {
+          _searchResults = [];
+        }
       });
+    } else {
+      _searchResults = [];
     }
   }
 
@@ -138,9 +126,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 FocusScope.of(context).requestFocus(FocusNode());
                 String query = _searchController.text;
-                if (query != null) {
-                  _searchBooks(query);
-                }
+                _searchBooks(query);
               },
               child: const Text('Procurar'),
             ),
